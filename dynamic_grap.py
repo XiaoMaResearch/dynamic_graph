@@ -1,33 +1,28 @@
 import matplotlib.pyplot as plt
 import numpy as np
-label = ['Adventure', 'Action', 'Drama', 'Comedy', 'Thriller/Suspense', 'Horror', 'Romantic Comedy', 'Musical',
-         'Documentary', 'Black Comedy', 'Western', 'Concert/Performance', 'Multiple Genres', 'Reality']
-
-num_movies = [
-    941,
-    854,
-    4595,
-    2125,
-    942,
-    509,
-    548,
-    149,
-    1952,
-    161,
-    64,
-    61,
-    35,
-    5
-]
-
-def plot_bar():
+import pandas as pd
+import os
+def read_data():
+    filename = "API_NY.GDP.MKTP.CD_DS2_en_csv_v2_10475113/API_NY.GDP.MKTP.CD_DS2_en_csv_v2_10475113.csv"
+    Data = pd.read_csv(filename,skiprows=4)
+    return Data
+def plot_bar(label, num_movies):
     index = np.arange(len(label))
     plt.bar(index,num_movies)
-    plt.xlabel('Genre',fontsize = 5)
-    plt.ylabel('Num of Movies',fontsize = 5)
+    plt.xlabel('Country Name',fontsize = 5)
+    plt.ylabel('GDP',fontsize = 5)
     plt.xticks(index,label,fontsize =5, rotation = 30)
-    plt.title('Market Share for Each Genre 1995-2017')
+    plt.title('GDP for Countries in 2016')
     plt.show()
-
-
-plot_bar()
+    
+Data = read_data();
+Data = Data.sort_values('2016',ascending=False)
+Data = Data.head(n=40)
+label = Data['Country Name']
+print(type(label))
+num_movies = Data['2016']
+print(type(num_movies))
+print(Data.shape)
+print(label.shape)
+print(num_movies.shape)
+plot_bar(label, num_movies)

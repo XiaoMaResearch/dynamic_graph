@@ -9,27 +9,32 @@ def read_data():
 def plot_bar(label, num_movies, Year):
     index = np.arange(len(label))
     fig1 = plt.figure(1)
-    plt.ylim((0, 1e14))
+    plt.clf()
+    #plt.ylim((0, 1e14))
     plt.bar(index,num_movies)
     plt.xlabel('Country Name',fontsize = 5)
     plt.ylabel('GDP',fontsize = 5)
     plt.xticks(index,label,fontsize =5, rotation = 30)
     plt.title('GDP for Countries in ' + Year)
-    plt.pause(3.0)
+    plt.pause(0.5)
     fig1.canvas.draw()
     #plt.show()
 
-def Data_select(Data, Year, num_countries):
+def Data_select(Data, Year, Country_List):
     Data = Data.sort_values(Year,ascending=False)
-    Data = Data.head(n=num_countries)
+    Data  = Data.loc[Country_List]
+    #Data = Data.head(n=num_countries)
     label = Data['Country Name']
     num_movies = Data[Year]
     return label, num_movies
 
-Years = ['1970','1990','2010']
 
+Data = read_data()
+Data.index = Data['Country Name']
+Country_List = ["United States", "United Kingdom", "France", "China", "Japan", "Canada","Italy", "India","Australia","Brazil"]
+Years = list(Data)[4:-2]
+print(Years)
 for i in range(len(Years)):
-    Data = read_data()
     num_of_countries = 1
-    label, num_movies = Data_select(Data, Years[i],num_of_countries)
+    label, num_movies = Data_select(Data, Years[i],Country_List)
     plot_bar(label,num_movies,Years[i])
